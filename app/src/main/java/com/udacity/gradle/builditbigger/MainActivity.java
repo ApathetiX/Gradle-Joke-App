@@ -1,5 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -60,13 +61,18 @@ public class MainActivity extends AppCompatActivity {
         // Tells a joke from the java lib onCLick
         Toast.makeText(this, mJokes.getJoke(), Toast.LENGTH_SHORT).show();
 
-        new EndpointsAsyncTask().execute();
+        new EndpointsAsyncTask(this).execute();
     }
 
     public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
         private MyApi myApiService = null;
         private JsonGetTaskListener mListener = null;
+        private Context context;
         private Exception mError;
+
+        public EndpointsAsyncTask(Context context) {
+            this.context = context;
+        }
 
         @Override
         protected String doInBackground(Void... params) {
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             // Sends an intent to the JokeActivity
             Intent jokeIntent = new Intent(getApplicationContext(), JokeActivity.class);
             jokeIntent.putExtra(JOKE_KEY, result);
-            getApplicationContext().startActivity(jokeIntent);
+            context.startActivity(jokeIntent);
         }
 
         public EndpointsAsyncTask setListener(JsonGetTaskListener listener) {

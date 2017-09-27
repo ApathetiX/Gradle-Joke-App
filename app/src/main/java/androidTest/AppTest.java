@@ -10,7 +10,7 @@ import java.util.concurrent.CountDownLatch;
 
 
 
-public class AppTest extends ApplicationTestCase<Application> {
+public class AppTest extends ApplicationTestCase{
     String mJsonString = null;
     Exception mError = null;
     CountDownLatch signal = null;
@@ -31,7 +31,7 @@ public class AppTest extends ApplicationTestCase<Application> {
 
     public void testAlbumGetTask() throws InterruptedException {
 
-        MainActivity.EndpointsAsyncTask task = new MainActivity().new EndpointsAsyncTask();
+        MainActivity.EndpointsAsyncTask task = new MainActivity().new EndpointsAsyncTask(getContext());
         task.setListener(new MainActivity.JsonGetTaskListener() {
             @Override
             public void onComplete(String jsonString, Exception e) {
