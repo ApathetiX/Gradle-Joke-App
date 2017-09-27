@@ -61,12 +61,16 @@ public class MainActivity extends AppCompatActivity {
         // Tells a joke from the java lib onCLick
         Toast.makeText(this, mJokes.getJoke(), Toast.LENGTH_SHORT).show();
 
-        new EndpointsAsyncTask().execute();
+        new EndpointsAsyncTask(this).execute();
     }
 
-    private static class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+    static class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
         private static MyApi myApiService = null;
         private Context context;
+
+        public EndpointsAsyncTask(Context context) {
+            this.context = context;
+        }
 
         @Override
         protected String doInBackground(Void... params) {
