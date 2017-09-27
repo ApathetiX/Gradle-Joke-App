@@ -7,13 +7,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.MyJokes;
+
 
 public class MainActivity extends AppCompatActivity {
+    private MyJokes mJokes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Instantiates the java jokes library
+        mJokes = new MyJokes();
     }
 
 
@@ -40,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
+        // Tells a joke from the java lib onCLick
+        Toast.makeText(this, mJokes.getJoke(), Toast.LENGTH_SHORT).show();
     }
 
 
