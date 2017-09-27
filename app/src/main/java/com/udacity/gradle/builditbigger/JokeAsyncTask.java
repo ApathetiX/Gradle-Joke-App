@@ -26,6 +26,8 @@ public class JokeAsyncTask extends AsyncTask<Void, Void, String> {
         mContext = context;
     }
 
+    public JokeAsyncTask() {} // Empty constructor
+
     @Override
     protected String doInBackground(Void... params) {
         if (myApiService == null) {  // Only do this once

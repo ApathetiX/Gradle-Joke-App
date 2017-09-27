@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     private MyJokes mJokes;
     public static final String JOKE_KEY = "joke";
 
+    public MainActivity() {}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
