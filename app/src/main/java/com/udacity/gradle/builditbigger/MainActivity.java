@@ -1,6 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -61,20 +60,17 @@ public class MainActivity extends AppCompatActivity {
         // Tells a joke from the java lib onCLick
         Toast.makeText(this, mJokes.getJoke(), Toast.LENGTH_SHORT).show();
 
-        new EndpointsAsyncTask(this).execute();
+        new EndpointsAsyncTask().execute();
     }
 
-    static class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
-        private static MyApi myApiService = null;
-        private Context context;
-
-        public EndpointsAsyncTask(Context context) {
-            this.context = context;
-        }
+    public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+        private MyApi myApiService = null;
+        private JsonGetTaskListener mListener = null;
+        private Exception mError;
 
         @Override
         protected String doInBackground(Void... params) {
-            if(myApiService == null) {  // Only do this once
+            if (myApiService == null) {  // Only do this once
                 MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                         new AndroidJsonFactory(), null)
                         // options for running against local devappserver
@@ -103,11 +99,22 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            if (this.mListener != null)
+                this.mListener.onComplete(result, mError);
             // Sends an intent to the JokeActivity
-            Intent jokeIntent = new Intent(context, JokeActivity.class);
+            Intent jokeIntent = new Intent(getApplicationContext(), JokeActivity.class);
             jokeIntent.putExtra(JOKE_KEY, result);
-            context.startActivity(jokeIntent);
+            getApplicationContext().startActivity(jokeIntent);
         }
+
+        public EndpointsAsyncTask setListener(JsonGetTaskListener listener) {
+            this.mListener = listener;
+            return this;
+        }
+    }
+
+    public interface JsonGetTaskListener {
+        void onComplete(String jsonString, Exception e);
     }
 
 
